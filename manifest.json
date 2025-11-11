@@ -9,7 +9,7 @@
 
   // The file that should be opened when the app starts
   // Here it points to the main HTML file of the app
-  "start_url": "./Scopone_scientifico_app.html",
+  "start_url": "./index.html",
 
   // Defines how the app appears when launched
   // "standalone" removes the browser UI and makes it look like a native app
