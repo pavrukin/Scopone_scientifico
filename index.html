@@ -44,8 +44,8 @@
   <!-- Specifies the app icon for browsers and Android devices -->
   <link rel="icon" sizes="512x512" href="icon_scopone_scientifico.png">
 
-  <!-- Specifies the app icon for iOS devices (used when “Add to Home Screen”) -->
-  <link rel="apple-touch-icon" href="icon_scopone_scientifico.png">
+    <!-- Apple Home Screen Icon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="icon_scopone_scientifico.png">
 
   <!-- Links to the PWA (Progressive Web App) manifest file that defines app name, icons, and start URL -->
   <link rel="manifest" href="manifest.json">
@@ -606,7 +606,7 @@
 <script>
 
 /* Persistent Couples Calculator
- - Saves state in localStorage ('cc_state_v4') to persist players and history
+ - Saves state in localStorage ('cc_state_v5') to persist players and history
 */
 
 // ==============================================
@@ -615,7 +615,7 @@
 
 // Key used to store and retrieve app data in the browser's localStorage.
 // (Acts like a filename for saving state persistently between sessions.)
-const STORAGE_KEY = 'cc_state_v4';
+const STORAGE_KEY = 'cc_state_v5';
 
 // Array that holds all player objects.
 // Each player will have an id, name, points, and computed rank.
@@ -984,9 +984,10 @@ function computePreview(){
 
    // Check for duplicate player selection
   const sel = [t1a,t1b,t2a,t2b];
-  if (new Set(sel).size < sel.length)
+  if (new Set(sel).size < sel.length){
     showAppAlert(`Hai selezionato lo stesso giocatore più volte; scegli giocatori diversi.`);
-    return;
+    return null;
+    }     
 
  
   // Compute metrics (team strength) for both teams
@@ -995,7 +996,7 @@ function computePreview(){
 
   // Validate computed metrics
   if (!m1.metric || !m2.metric)
-    return { error: 'Metriche invalide.' };
+    return null;
 
   // Calculate the winning points for each team:
   // The stronger team (smaller metric) gains fewer points,
@@ -1175,7 +1176,7 @@ document.getElementById('calcBtn').addEventListener('click', ()=>{
   const res = computePreview();
 
   // Handle errors from invalid selections
-  if (res && res.error){ alert(res.error); return; }
+  if (!res) return; 
 
   // Get player objects
   const p1 = findPlayer(document.getElementById('t1p1').value);
@@ -1194,7 +1195,11 @@ document.getElementById('calcBtn').addEventListener('click', ()=>{
 // --- Assign Points Button ---
 document.getElementById('assignBtn').addEventListener('click', ()=>{
   const res = computePreview();
-  if (res && res.error){ alert(res.error); return; }
+
+   // If computePreview returns an error object, stop right here
+   if (!res) return; 
+
+
 
   const p1 = findPlayer(document.getElementById('t1p1').value);
   const p2 = findPlayer(document.getElementById('t1p2').value);

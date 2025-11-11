@@ -46,5 +46,16 @@
       // File type again
       "type": "image/png"
     }
+    {
+      // Smaller version of the app icon
+      // Used on some IOs devices or when smaller icons are required
+      "src": "icon_scopone_scientifico.png",
+
+      // Icon size in pixels
+      "sizes": "180x180",
+
+      // File type again
+      "type": "image/png"
+    }
   ]
 }
