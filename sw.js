@@ -2,7 +2,7 @@
 const CACHE_NAME = 'scopone-v1';
 const FILES_TO_CACHE = [
   './',
-  './Scopone_scientifico_app.html',
+  './index.html',
   './manifest.json',
   './icon_scopone_scientifico.png'
 ];
