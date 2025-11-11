@@ -422,7 +422,6 @@
 
        </div> <!-- End teams container -->
 
-
        <!-- ===== ACTION BUTTONS ===== -->
        <div class="controls">
          <!-- Calculates points without assigning them -->
@@ -602,10 +601,12 @@
     </div>
   </div>
 
+  
+
 <script>
 
 /* Persistent Couples Calculator
- - Saves state in localStorage ('cc_state_v3') to persist players and history
+ - Saves state in localStorage ('cc_state_v2') to persist players and history
 */
 
 // ==============================================
@@ -614,7 +615,7 @@
 
 // Key used to store and retrieve app data in the browser's localStorage.
 // (Acts like a filename for saving state persistently between sessions.)
-const STORAGE_KEY = 'cc_state_v3';
+const STORAGE_KEY = 'cc_state_v2';
 
 // Array that holds all player objects.
 // Each player will have an id, name, points, and computed rank.
@@ -981,11 +982,13 @@ function computePreview(){
   const t2a = document.getElementById('t2p1').value;
   const t2b = document.getElementById('t2p2').value;
 
-  // Check for duplicate player selection
+   // Check for duplicate player selection
   const sel = [t1a,t1b,t2a,t2b];
   if (new Set(sel).size < sel.length)
-     showAppAlert(`Hai selezionato lo stesso giocatore più volte; scegli giocatori diversi.`);
+    showAppAlert(`Hai selezionato lo stesso giocatore più volte; scegli giocatori diversi.`);
+     
 
+ 
   // Compute metrics (team strength) for both teams
   const m1 = computeMetric(method, t1a, t1b);
   const m2 = computeMetric(method, t2a, t2b);
@@ -1003,7 +1006,6 @@ function computePreview(){
   // Return all relevant data in one object
   return { ok:true, m1, m2, win1, win2, base };
 }
-
 
 
 // ==============================================
@@ -1068,34 +1070,63 @@ function showAppConfirm(text, onConfirm, onCancel) {
   modal.querySelector('#noBtn').onclick = () => { modal.remove(); if (onCancel) onCancel(); };
 }
 
+// Function to show the error modal
+function showErrorModal(message) {
+    const modal = document.getElementById('error-modal');
+    const modalMessage = document.getElementById('modal-message');
+    const closeBtn = document.getElementById('close-modal');
+
+    modalMessage.textContent = message;
+    modal.style.display = 'block';
+
+    // Close when clicking the close button
+    closeBtn.onclick = () => {
+        modal.style.display = 'none';
+    }
+
+    // Optional: close when clicking outside the modal content
+    window.onclick = (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    }
+}
 
 
 // ==============================================
 // UNDO FUNCTION
 // ==============================================
 
+
+// --- Undo Button ---
+document.getElementById('undoBtn').addEventListener('click', ()=>undo());
+
+
 // Restores the last saved points from historyStack
 function undo(){
   if (!historyStack.length){
-    alert('Nessuna assegnazione da annullare.');
+    showAppAlert('Nessuna assegnazione da annullare.');
     return;
   }
 
-  // Retrieve and remove last snapshot
-  const last = historyStack.pop();
-
-  // Restore points for each player
-  last.forEach(s => {
-    const p = findPlayer(s.id);
-    if (p) p.points = s.points;
+    showAppConfirm(`Confermi l’ultima assegnazione da annullare?`, () => { 
+    // Retrieve and remove last snapshot
+    const last = historyStack.pop();
+  
+    // Restore points for each player
+    last.forEach(s => {
+      const p = findPlayer(s.id);
+      if (p) p.points = s.points;
+    });
+  
+    computeRanks();
+    refreshTable();
+    saveState();
+  
+    // Show small message confirming undo
+    showAppAlert('Ultima assegnazione annullata.');
   });
 
-  computeRanks();
-  refreshTable();
-  saveState();
-
-  // Show small message confirming undo
-  showMsg('Ultima assegnazione annullata.', 1600);
 }
 
 
@@ -1228,8 +1259,7 @@ document.getElementById('assignBtn').addEventListener('click', ()=>{
 });
 
 
-// --- Undo Button ---
-document.getElementById('undoBtn').addEventListener('click', ()=>undo());
+
 
 
 // ==============================================
