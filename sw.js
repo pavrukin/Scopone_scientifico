@@ -1,5 +1,5 @@
 // sw.js
-const CACHE_NAME = 'scopone-v5';
+const CACHE_NAME = 'scopone-v6';
 const FILES_TO_CACHE = [
   './',
   './index.html',
