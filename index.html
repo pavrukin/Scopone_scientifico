@@ -984,7 +984,7 @@ function computePreview(){
   // Check for duplicate player selection
   const sel = [t1a,t1b,t2a,t2b];
   if (new Set(sel).size < sel.length)
-    return { error: 'Hai selezionato lo stesso giocatore più volte; scegli giocatori diversi.' };
+     showAppAlert(`Hai selezionato lo stesso giocatore più volte; scegli giocatori diversi.`);
 
   // Compute metrics (team strength) for both teams
   const m1 = computeMetric(method, t1a, t1b);
