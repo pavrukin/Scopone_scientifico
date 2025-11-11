@@ -1,0 +1,50 @@
+{
+  // The full name of the Progressive Web App (PWA)
+  // Displayed when the app is installed (for example under the icon or in app lists)
+  "name": "Scopone Scientifico",
+
+  // A shorter version of the name, used when there’s limited space
+  // (e.g., on the mobile home screen or task switcher)
+  "short_name": "Scopone",
+
+  // The file that should be opened when the app starts
+  // Here it points to the main HTML file of the app
+  "start_url": "./Scopone_scientifico_app.html",
+
+  // Defines how the app appears when launched
+  // "standalone" removes the browser UI and makes it look like a native app
+  "display": "standalone",
+
+  // The background color used on the splash screen while the app loads
+  // Should match your app’s main background for smooth appearance
+  "background_color": "#ffffff",
+
+  // The main accent color for the app
+  // Used for browser UI (like the top bar or task switcher theme)
+  "theme_color": "#0ea5e9",
+
+  // List of icons used by the app for installation on different devices
+  "icons": [
+    {
+      // Path to the large app icon file
+      "src": "icon_scopone_scientifico.png",
+
+      // Icon size in pixels (used for high-resolution devices)
+      "sizes": "512x512",
+
+      // File type (standard PNG image)
+      "type": "image/png"
+    },
+    {
+      // Smaller version of the app icon
+      // Used on some Android devices or when smaller icons are required
+      "src": "icon_scopone_scientifico.png",
+
+      // Icon size in pixels
+      "sizes": "192x192",
+
+      // File type again
+      "type": "image/png"
+    }
+  ]
+}

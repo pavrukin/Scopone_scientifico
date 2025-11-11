@@ -1,0 +1,1445 @@
+<!-- Defines the document type as HTML5 -->
+<!doctype html>
+
+<!-- The root element of the document, specifying the language as Italian -->
+<html lang="it">
+
+<head>
+  <!-- Defines the character encoding (UTF-8 covers almost all languages and symbols) -->
+  <meta charset="utf-8" />
+
+  <!-- Ensures proper scaling and layout on mobile devices -->
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <!-- The title that appears in the browser tab -->
+  <title>Scopone Scientifico</title>
+
+
+  <!-- ========================== -->
+  <!--      APP-LIKE META TAGS     -->
+  <!-- ========================== -->
+  <!-- Set the theme color of the browser’s UI when the app is opened -->
+  <meta name="theme-color" content="#ffffff">
+
+  <!-- Indicates that this web page can behave like a standalone mobile app when saved to home screen -->
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <!-- Defines the short name of the web application -->
+  <meta name="application-name" content="Scopone Scientifico">
+
+  <!-- Enables Apple-specific “Add to Home Screen” features -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <!-- Defines the color and style of the iOS status bar when the web app is opened -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <!-- Defines the title shown when the app is saved to the iPhone or iPad home screen -->
+  <meta name="apple-mobile-web-app-title" content="Scopone Scientifico">
+
+
+  <!-- ========================== -->
+  <!--      ICONS & MANIFEST       -->
+  <!-- ========================== -->
+
+  <!-- Specifies the app icon for browsers and Android devices -->
+  <link rel="icon" sizes="512x512" href="icon_scopone_scientifico.png">
+
+  <!-- Specifies the app icon for iOS devices (used when “Add to Home Screen”) -->
+  <link rel="apple-touch-icon" href="icon_scopone_scientifico.png">
+
+  <!-- Links to the PWA (Progressive Web App) manifest file that defines app name, icons, and start URL -->
+  <link rel="manifest" href="manifest.json">
+
+
+  <!-- ========================== -->
+  <!--  SERVICE WORKER REGISTRATION -->
+  <!-- ========================== -->
+  <script>
+    // Check if the browser supports service workers
+    if ('serviceWorker' in navigator) {
+      // Try to register the service worker located in 'sw.js'
+      navigator.serviceWorker.register('sw.js')
+        // If registration is successful, log a success message to the console
+        .then(() => console.log('✅ Service worker registered'))
+        // If registration fails, log the error
+        .catch(err => console.error('❌ SW registration failed:', err));
+    }
+  </script>
+</head>
+
+
+<!-- Defines the secondary title that might appear in search previews -->
+<title>Scopone Sci</title>
+
+
+<!-- ========================== -->
+<!--         CSS STYLES         -->
+<!-- ========================== -->
+<style>
+
+  /* ----------------------------
+     Root-level CSS variables 
+     (used throughout for consistent colors and spacing)
+  -----------------------------*/
+  :root{
+    --bg:#ffffff;                 /* background color */
+    --card:#ffffff;               /* card background */
+    --muted:#51606a;              /* muted gray text */
+    --accent:#0ea5e9;             /* primary blue color */   
+    --accent-600:#0284c7;         /* darker shade of blue for highlights */
+    --shadow: 0 8px 24px rgba(14,165,233,0.08); /* soft shadow for elements */
+    --radius:12px;                /* default corner radius */
+    --gap:12px;                   /* standard spacing between elements */
+    --maxw:900px;                 /* maximum page width */
+  }
+
+  /* Basic reset and font settings for the whole page */
+  html,body{
+    height:100%;                       /* make full page height */
+    margin:0;                           /* remove default browser margin */
+    font-family:Inter, Roboto, "Helvetica Neue", Arial; /* preferred fonts */
+    background:var(--bg);               /* set background color from variable */
+    color:#0f1724;                      /* set main text color */
+  }
+
+  /* Wrapper class that centers content and limits width */
+  .wrap{
+    max-width:var(--maxw);
+    margin:18px auto;                  /* centers content horizontally */
+    padding:16px;                      /* adds inner spacing */
+  }
+
+  /* Header area: horizontally aligns title and icons if present */
+  header{
+    display:flex;                      /* aligns child elements horizontally */
+    align-items:center;                /* vertically centers them */
+    gap:12px;                          /* space between header elements */
+    margin-bottom:12px;                /* space below header */
+  }
+
+  /* Style for the main title */
+  h1{
+    font-size:18px;
+    margin:0;                          /* remove extra spacing */
+  }
+
+  /* Subtitle under main title */
+  .subtitle{
+    color:var(--muted);                /* muted text color */
+    font-size:14px;                    /* smaller font size */
+    margin-top:4px;                    /* slight space above */
+  }
+
+
+  /* ----------------------------
+     Tabs Navigation
+  -----------------------------*/
+  .tabs{
+    display:flex;
+    gap:8px;
+    margin:10px 0 16px;                /* space around the tab buttons */
+  }
+
+  /* Generic tab button appearance */
+  .tab-btn{
+    background:transparent;            /* no background */
+    border:0;                          /* remove default border */
+    padding:8px 12px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:600;                   /* make text bold */
+    color:#123;
+  }
+
+  /* Active tab button style (highlighted) */
+  .tab-btn.active{
+    background:linear-gradient(90deg,rgba(14,165,233,0.12),rgba(2,132,199,0.05));
+    box-shadow:var(--shadow);
+    color:var(--accent-600);
+  }
+
+
+  /* ----------------------------
+     Card-like containers for sections
+  -----------------------------*/
+  .card{
+    background:var(--card);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:16px;
+    margin-bottom:12px;
+  }
+
+  /* Style for all <label> elements */
+  label{
+    display:block;
+    font-size:13px;
+    color:var(--muted);
+    margin-bottom:6px;
+  }
+
+  /* Row layout used to place inputs side by side */
+  .row{
+    display:flex;
+    gap:var(--gap);
+    flex-wrap:wrap;                    /* wrap items if window is small */
+  }
+
+  /* Column layout — flexible width with a minimum size */
+  .col{
+    flex:1;
+    min-width:120px;
+  }
+
+  /* ----------------------------
+     Input fields (text, number, select)
+  -----------------------------*/
+  input[type="number"], select, input[type="text"]{
+    width:100%;
+    padding:10px;
+    border-radius:10px;
+    border:1px solid #e6eef6;
+    font-size:15px;
+    background:#fbfeff;                /* light background color */
+    box-sizing:border-box;             /* includes padding in width */
+  }
+
+  /* ----------------------------
+     Buttons
+  -----------------------------*/
+  /* Main action button (e.g., calculate, assign) */
+  button.action{
+    background:var(--accent);
+    color:white;
+    border:0;
+    padding:10px 14px;
+    border-radius:10px;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:0 6px 14px rgba(14,165,233,0.12);
+  }
+
+  /* Secondary 'ghost' button with transparent background */
+  button.ghost{
+    background:transparent;
+    border:1px solid #dbeaf6;
+    color:#045d7a;
+    padding:8px 12px;
+    border-radius:10px;
+    cursor:pointer;
+  }
+
+  /* Layout for group of buttons or controls */
+  .controls{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:10px;
+  }
+
+  /* Output box where calculated points are displayed */
+  .output{
+    margin-top:12px;
+    padding:12px;
+    border-radius:10px;
+    background:linear-gradient(180deg,#f8feff,#f1fbff);
+    font-weight:600;
+    color:#043047;
+    white-space:pre-line;              /* preserve line breaks in text */
+  }
+
+
+  /* ----------------------------
+     Table styling (used for leaderboard)
+  -----------------------------*/
+  table{
+    width:100%;
+    border-collapse:collapse;          /* remove double borders between cells */
+  }
+
+  th,td{
+    padding:8px;
+    text-align:left;
+    border-bottom:1px solid #eef6fb;
+    font-size:14px;
+  }
+
+  th{
+    color:var(--muted);
+    font-weight:700;
+  }
+
+  /* Input field style used inside player table */
+  .player-input{
+    width:92%;
+    padding:8px;
+    border-radius:8px;
+    border:1px solid #e6eef6;
+  }
+
+  /* Small text style used for hints or explanations */
+  .small{
+    font-size:13px;
+    color:var(--muted);
+    margin-top:6px;
+  }
+
+
+  /* ----------------------------
+     Responsive design adjustments
+     (for screens smaller than 520px)
+  -----------------------------*/
+  @media (max-width:520px){
+    header{gap:8px;}
+    .row{flex-direction:column;}       /* stack inputs vertically */
+    .controls{flex-direction:column;}  /* stack buttons vertically */
+  }
+
+
+  /* ----------------------------
+     Modal window styles (pop-ups)
+  -----------------------------*/
+  .modal-backdrop{
+    position:fixed;                    /* fixed position covers whole screen */
+    inset:0;                           /* shorthand for top/right/bottom/left:0 */
+    background:rgba(0,0,0,0.35);       /* semi-transparent dark overlay */
+    display:flex;
+    align-items:center;                /* center content vertically */
+    justify-content:center;            /* center content horizontally */
+    z-index:9999;                      /* ensures modal appears above all elements */
+  }
+
+  /* Inner modal box appearance */
+  .modal{
+    background:white;
+    padding:16px;
+    border-radius:12px;
+    max-width:400px;
+    width:92%;                         /* responsive width */
+    box-shadow:0 10px 30px rgba(2,132,199,0.18);
+  }
+
+  /* Modal title spacing */
+  .modal h3{
+    margin:0 0 8px 0;
+  }
+
+  /* Generic button style inside modal */
+  .modal .btn{
+    padding:10px 12px;
+    border-radius:10px;
+    border:0;
+    cursor:pointer;
+    font-weight:700;
+    width:100%;                        /* full width buttons */
+    margin-top:8px;
+  }
+
+  /* Primary button (e.g., Confirm, OK) */
+  .btn-primary{
+    background:var(--accent);
+    color:white;
+  }
+
+  /* Secondary button (e.g., Cancel) */
+  .btn-secondary{
+    background:#eef7fb;
+    color:var(--accent-600);
+    border:1px solid #d9f0fb;
+  }
+
+</style>
+
+</head>
+<body>
+
+  <!-- The main wrapper that limits width and centers all content -->
+  <div class="wrap">
+
+    <!-- ========== HEADER SECTION ========== -->
+    <header>
+      <div>
+        <!-- Main page title -->
+        <h1>Scopone scientifico </h1>
+
+        <!-- Subtitle displayed under the title -->
+        <div class="subtitle">Calcolatore Punti</div>
+      </div>
+    </header>
+
+    <!-- ========== TAB BUTTONS (NAVIGATION) ========== -->
+    <!-- These buttons switch between the three app sections:
+         1. Partita (Match)
+         2. Classifica (Leaderboard)
+         3. Impostazioni (Settings)
+         The 'active' class visually highlights the current section. -->
+    <div class="tabs">
+      <button id="tabCalcBtn" class="tab-btn active">Partita</button>
+      <button id="tabTableBtn" class="tab-btn">Classifica</button>
+      <button id="tabImpostBtn" class="tab-btn">Impostazioni</button>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- ============== PARTITA SECTION =============== -->
+    <!-- ============================================== -->
+    <!-- This card contains controls for selecting teams
+         and calculating/assigning match points. -->
+    <div id="tabCalc" class="card">
+
+       <!-- Short instruction under the title -->
+       <div class="subtitle">Scegli vincitore tramite popup N</div>
+
+       <!-- Decorative horizontal separator line -->
+       <hr style="margin:14px 0;border:none;border-top:1px solid #eef6fb;">
+
+       <!-- Container that holds both teams side by side -->
+       <div style="display:flex;gap:16px;flex-wrap:wrap;">
+
+         <!-- ===== TEAM 1 SELECTION ===== -->
+         <div style="flex:1;min-width:240px;">
+           <!-- Label for the first team -->
+           <label><strong>Squadra 1</strong></label>
+
+           <!-- The .row uses flex layout to hold the two player selectors -->
+           <div class="row">
+             <!-- Dropdown to choose player 1 of Team 1 -->
+             <select id="t1p1"></select>
+             <!-- Dropdown to choose player 2 of Team 1 -->
+             <select id="t1p2"></select>
+           </div>
+         </div>
+
+         <!-- ===== TEAM 2 SELECTION ===== -->
+         <div style="flex:1;min-width:240px;">
+           <label><strong>Squadra 2</strong></label>
+           <div class="row">
+             <!-- Dropdown to choose player 1 of Team 2 -->
+             <select id="t2p1"></select>
+             <!-- Dropdown to choose player 2 of Team 2 -->
+             <select id="t2p2"></select>
+           </div>
+         </div>
+
+       </div> <!-- End teams container -->
+
+
+       <!-- ===== ACTION BUTTONS ===== -->
+       <div class="controls">
+         <!-- Calculates points without assigning them -->
+         <button id="calcBtn" class="action">Calcola punti</button>
+
+         <!-- Assigns points to the selected team after choosing a winner -->
+         <button id="assignBtn" class="action">Assegna punti</button>
+
+         <!-- Reverts the last points assignment -->
+         <button id="undoBtn" class="ghost">Annulla ultimo</button>
+       </div>
+
+       <!-- Output box: shows point calculations or messages.
+            Initially hidden, displayed dynamically by JavaScript. -->
+       <div id="output" class="output" style="display:none;"></div>
+
+       <!-- Small text used for transient messages or status updates -->
+       <div id="msg" class="small"></div>
+
+    </div> <!-- END OF PARTITA TAB -->
+
+
+    <!-- ============================================== -->
+    <!-- ============== CLASSIFICA SECTION ============ -->
+    <!-- ============================================== -->
+    <!-- This section shows the leaderboard table with players,
+         their names, and points. It also allows adding/removing players. -->
+    <div id="tabTable" class="card" style="display:none;">
+
+      <!-- Header with section title -->
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <h3 style="margin:0">Classifica giocatori</h3>
+      </div>
+
+      <!-- Table displaying players -->
+      <div style="margin-top:10px">
+        <table id="playersTable" aria-label="Tabella giocatori">
+          <thead>
+            <!-- Table headers: Rank, Name, and Points -->
+            <tr>
+              <th>Rango</th>
+              <th>Nome</th>
+              <th>Punti</th>
+            </tr>
+          </thead>
+          <!-- Table body is dynamically generated by JavaScript -->
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <!-- Buttons below the table to manage players -->
+      <div style="display:flex;gap:8px;align-items:center;margin-top:10px;">
+        <!-- Adds a new player to the list -->
+        <button id="addPlayerBtn" class="ghost">➕ Aggiungi giocatore</button>
+
+        <!-- Opens the modal for removing a selected player -->
+        <button id="removePlayerBtn" class="ghost">🗑️ Rimuovi giocatore</button>
+      </div>
+
+      <!-- Small explanatory note below the table -->
+      <p class="small">
+        Modifica i nomi e i punti nella tabella:
+        scrivi/edita e premi invio o clic fuori dal campo per salvare.
+      </p>
+    </div> <!-- END CLASSIFICA TAB -->
+
+
+    <!-- ============================================== -->
+    <!-- ============== IMPOSTAZIONI SECTION ========== -->
+    <!-- ============================================== -->
+    <!-- This section holds game configuration parameters like
+         base points and calculation method. -->
+    <div id="tabImpost" class="card" style="display:none;">
+
+      <!-- Row with two columns for inputs -->
+      <div class="row">
+
+        <!-- Base points column -->
+        <div class="col">
+          <label>Punti base</label>
+          <!-- Input field to set base points for score calculations -->
+          <input id="base" type="number" value="100" min="1">
+        </div>
+
+        <!-- Calculation method column -->
+        <div class="col">
+          <label>Metodo</label>
+          <!-- Dropdown to choose formula for calculating team scores -->
+          <select id="method">
+            <option value="product">Prodotto</option>           <!-- rank1 × rank2 -->
+            <option value="geometric">Media geometrica</option> <!-- √(rank1×rank2) -->
+            <option value="sum">Somma</option>                  <!-- rank1 + rank2 -->
+          </select>
+        </div>
+      </div>
+
+      <!-- Separator line for visual clarity -->
+      <hr style="margin:14px 0;border:none;border-top:1px solid #eef6fb;">
+
+      <!-- Button that resets all player points to zero -->
+      <button id="zeroPointsBtn" class="ghost">Azzera tutti i punti</button>
+
+    </div> <!-- END IMPOSTAZIONI TAB -->
+
+
+    <!-- ============================================== -->
+    <!-- ============== FOOTER ======================== -->
+    <!-- ============================================== -->
+    <footer style="margin-top:10px;color:var(--muted);font-size:13px;text-align:center">
+      <!-- Footer text with developer/company credit -->
+      Dugoni App S.p.A.
+    </footer>
+
+  </div> <!-- END WRAP (main container) -->
+
+
+  <!-- ============================================== -->
+  <!-- ============== WINNER SELECTION MODAL ========= -->
+  <!-- ============================================== -->
+  <!-- Hidden modal window that appears when assigning points.
+       Lets the user choose which team won the match. -->
+  <div id="modalBackdrop" class="modal-backdrop" style="display:none;">
+    <div class="modal" role="dialog" aria-modal="true">
+
+      <!-- Modal title -->
+      <h3>Seleziona il vincitore</h3>
+
+      <!-- Container where JavaScript inserts team names -->
+      <div id="modalTeams" style="margin-top:8px;"></div>
+
+      <!-- Buttons for selecting winner or canceling -->
+      <div style="margin-top:12px;">
+        <!-- Button representing Team 1 -->
+        <button id="modalChoice1" class="btn btn-primary"></button>
+
+        <!-- Button representing Team 2 -->
+        <button id="modalChoice2" class="btn btn-secondary" style="margin-left:8px;"></button>
+
+        <!-- Cancel button closes the modal without changing data -->
+        <button id="modalCancel" class="btn" style="background:#fff;border:1px solid #eee;margin-top:8px;">
+          Annulla
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ============================================== -->
+  <!-- ============== REMOVE PLAYER MODAL =========== -->
+  <!-- ============================================== -->
+  <!-- Hidden modal that allows the user to choose and remove a player from the list -->
+  <div id="removePlayerModal" class="modal-backdrop" style="display:none;">
+    <div class="modal" role="dialog" aria-modal="true">
+      <h3>Rimuovi giocatore</h3>
+
+      <!-- Label for the dropdown -->
+      <label for="removeSelect">Scegli il giocatore da eliminare:</label>
+
+      <!-- Dropdown listing all players, dynamically populated -->
+      <select id="removeSelect"
+              style="width:100%;
+                     padding:8px;
+                     border-radius:8px;
+                     border:1px solid #e6eef6;
+                     margin-top:8px;
+                     max-height:220px;
+                     overflow:auto;">
+      </select>
+
+      <!-- Buttons to confirm or cancel player removal -->
+      <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end;">
+        <!-- Confirm removal -->
+        <button id="confirmRemoveBtn" class="btn btn-primary">Rimuovi</button>
+        <!-- Cancel removal -->
+        <button id="cancelRemoveBtn" class="btn btn-secondary">Annulla</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+
+/* Persistent Couples Calculator
+ - Saves state in localStorage ('cc_state_v2') to persist players and history
+*/
+
+// ==============================================
+// CONSTANTS AND INITIAL VARIABLES
+// ==============================================
+
+// Key used to store and retrieve app data in the browser's localStorage.
+// (Acts like a filename for saving state persistently between sessions.)
+const STORAGE_KEY = 'cc_state_v2';
+
+// Array that holds all player objects.
+// Each player will have an id, name, points, and computed rank.
+let players = [];
+
+// Stack (array) used to store historical states of players' points.
+// Enables the "Undo last action" feature.
+let historyStack = [];
+
+
+// ==============================================
+// LOAD THE APPLICATION STATE
+// ==============================================
+
+// Loads the saved state from localStorage (if available).
+// If no saved state is found, it initializes default players.
+function loadState(){
+  try {
+    // Retrieve saved JSON string using our STORAGE_KEY.
+    const raw = localStorage.getItem(STORAGE_KEY);
+
+    // If something was found in storage...
+    if (raw) {
+      // Parse the string back into a JavaScript object.
+      const obj = JSON.parse(raw);
+
+      // Extract players and history arrays from saved data.
+      players = obj.players || [];
+      historyStack = obj.history || [];
+
+      // Ensure all player objects have the correct structure.
+      players.forEach(p => {
+        // If points field is missing or null, set it to 0.
+        if (p.points == null) p.points = 0;
+
+        // If id is missing, create a random one (for safety).
+        if (!p.id) p.id = Math.random();
+      });
+
+      // Compute player ranks immediately after loading.
+      computeRanks();
+      // Restore saved settings if available
+      if (obj.settings) {
+        if (obj.settings.method)
+           document.getElementById('method').value = obj.settings.method;
+        if (obj.settings.base)
+           document.getElementById('base').value = obj.settings.base;
+
+      // Stop here if load succeeded.
+      return;
+
+}
+    }
+  } catch(e){
+    // If something goes wrong (bad JSON, etc.), log an error to the console.
+    console.error('load error', e);
+  }
+
+  // If we reach this point, no valid saved state was found.
+  // Initialize the app with 12 default players.
+  initPlayers(12);
+
+  // Save this initial state to localStorage so next load will work.
+  saveState();
+}
+
+
+// ==============================================
+// SAVE THE APPLICATION STATE
+// ==============================================
+
+// Saves the current app data (players + history) into localStorage
+// so it persists after page reloads.
+function saveState(){
+  try {
+    // Create a compact object with only the needed player fields.
+    // (Avoid saving unnecessary temporary data.)
+    const payload = {
+      players: players.map(p => ({
+        id: p.id,
+        name: p.name,
+        points: p.points
+      })),
+      history: historyStack,
+      settings: {
+        method: document.getElementById('method').value,
+        base: Number(document.getElementById('base').value)
+      }
+    };
+
+    // Convert the object to a JSON string and store it.
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+  } catch(e){
+    // Log any unexpected saving error.
+    console.error('save error', e);
+  }
+}
+
+
+// ==============================================
+// INITIALIZE DEFAULT PLAYERS
+// ==============================================
+
+// Creates a starting list of players if no data exists yet.
+function initPlayers(count = 12){
+  players = []; // Clear the array before adding new ones.
+
+  // Create N players, numbered sequentially.
+  for (let i = 1; i <= count; i++){
+    players.push({
+      id: i,                              // unique numeric id
+      name: 'Giocatore ' + i,             // default player name
+      points: 0                           // starting score
+    });
+  }
+
+  // Compute ranks for all new players.
+  computeRanks();
+
+  // Reset the undo history since this is a fresh start.
+  historyStack = [];
+
+  // Save this new setup to localStorage.
+  saveState();
+}
+
+
+// ==============================================
+// COMPUTE RANKS
+// ==============================================
+
+// Calculates each player's rank based on their points.
+// Players with equal points get the same rank.
+function computeRanks(){
+  // Make a shallow copy of the array and sort by points descending.
+  // If two players have equal points, sort by id ascending (stable order).
+  const sorted = [...players].sort((a, b) => b.points - a.points || a.id - b.id);
+
+  // Object used to store computed ranks by player ID.
+  let ranks = {};
+
+  // Track last seen point total and its associated rank.
+  let lastPoints = null;
+  let lastRank = 0;
+  let idx = 0;
+
+  // Loop through the sorted list to assign ranks.
+  for (const p of sorted){
+    idx++;
+
+    // If current player has the same points as the last one,
+    // they share the same rank (so do nothing).
+    if (p.points === lastPoints){
+      // rank remains lastRank
+    }
+    // Otherwise, assign a new rank equal to the current index.
+    else {
+      lastRank = idx;
+      lastPoints = p.points;
+    }
+
+    // Save this player's rank in the lookup object.
+    ranks[p.id] = lastRank;
+  }
+
+  // Apply the computed ranks back to each player in the main array.
+  players.forEach(p => p.rank = ranks[p.id]);
+}
+
+
+// ==============================================
+// FIND PLAYER BY ID
+// ==============================================
+
+// Utility function that returns the player object with the given ID.
+function findPlayer(id){
+  // Convert id to a number before comparison (since <select> values are strings).
+  return players.find(p => p.id === Number(id));
+}
+
+
+// ==============================================
+// POPULATE PLAYER SELECTORS
+// ==============================================
+
+// Refreshes the dropdown menus used to choose players for each team.
+function populateSelectors(){
+  // IDs of all 4 <select> elements used for team composition.
+  const selIds = ['t1p1', 't1p2', 't2p1', 't2p2'];
+
+  // Loop through each selector ID and rebuild its options.
+  selIds.forEach(id => {
+    const sel = document.getElementById(id);
+
+    // If the element doesn’t exist in the page, skip it (safety check).
+    if (!sel) return;
+
+    // Remember the current selection to restore later.
+    const cur = sel.value;
+
+    // Clear any existing <option> elements.
+    sel.innerHTML = '';
+
+    // Create and append an empty default option (placeholder).
+    const empty = document.createElement('option');
+    empty.value = '';
+    empty.textContent = '— Seleziona —'; // means “Select” in Italian
+    sel.appendChild(empty);
+
+    // Add one option per player.
+    players.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.id;      // value used to identify the player
+      opt.textContent = p.name; // text shown in the dropdown
+      sel.appendChild(opt);
+    });
+
+    // Restore the previously selected player if still available.
+    if (cur) sel.value = cur;
+  });
+}
+
+
+// ==============================================
+// REFRESH THE LEADERBOARD TABLE
+// ==============================================
+
+// Rebuilds the “Classifica” (leaderboard) HTML table
+// based on the current player list and their points/ranks.
+function refreshTable() {
+
+  // Make sure ranks are up-to-date before displaying
+  computeRanks();
+
+  // Select the <tbody> element inside the player table
+  const tbody = document.querySelector('#playersTable tbody');
+
+  // Clear all current rows to rebuild from scratch
+  tbody.innerHTML = '';
+
+  // Create a sorted list of players (ascending by rank, then by id)
+  const sorted = [...players].sort((a,b) => a.rank - b.rank || a.id - b.id);
+
+  // For each player, create a new table row
+  sorted.forEach(p => {
+    const tr = document.createElement('tr');
+
+    // --- RANK CELL ---
+    const tdRank = document.createElement('td');
+    tdRank.textContent = p.rank; // show player’s rank number
+
+    // --- NAME CELL (editable) ---
+    const tdName = document.createElement('td');
+    // use flex to align the input nicely inside the cell
+    tdName.style.display = 'flex';
+    tdName.style.alignItems = 'center';
+    tdName.style.gap = '6px';
+
+    // create a text input so the user can rename the player directly
+    const inputName = document.createElement('input');
+    inputName.type = 'text';
+    inputName.value = p.name;
+    inputName.className = 'player-input';
+    inputName.style.flex = '1';
+
+    // When the input loses focus or its value changes,
+    // update the player’s name and save the new state
+    inputName.addEventListener('change', () => {
+      p.name = inputName.value.trim() || ('Giocatore ' + p.id);
+      saveState();        // persist change to localStorage
+      populateSelectors(); // update dropdowns with new name
+    });
+
+    // Pressing Enter should finalize the edit (remove focus)
+    inputName.addEventListener('keydown', (e) => { 
+      if (e.key === 'Enter') inputName.blur(); 
+    });
+
+    // Add the input to the name cell
+    tdName.appendChild(inputName);
+
+
+    // --- POINTS CELL (editable number field) ---
+    const tdPoints = document.createElement('td');
+    const inputPoints = document.createElement('input');
+    inputPoints.type = 'number';
+    inputPoints.value = p.points;        // show current points
+    inputPoints.className = 'player-input';
+    inputPoints.style.width = '80px';    // fixed width for numbers
+
+    // When points are changed manually, recalculate ranks and save
+    inputPoints.addEventListener('change', () => {
+      const val = Number(inputPoints.value);
+      p.points = isNaN(val) ? 0 : val;
+      computeRanks();
+      saveState();
+      refreshTable(); // re-render to reflect possible rank changes
+    });
+
+    // Pressing Enter also finalizes editing
+    inputPoints.addEventListener('keydown', (e) => { 
+      if (e.key === 'Enter') inputPoints.blur(); 
+    });
+
+    // Add input to the points cell
+    tdPoints.appendChild(inputPoints);
+
+    // --- BUILD ROW ---
+    tr.appendChild(tdRank);
+    tr.appendChild(tdName);
+    tr.appendChild(tdPoints);
+    tbody.appendChild(tr);
+  });
+
+  // After rebuilding the table, refresh the team selectors too
+  populateSelectors();
+}
+
+
+
+// ==============================================
+// SCORE CALCULATION UTILITIES
+// ==============================================
+
+// Returns the rank number of a given player ID.
+// Defaults to 1 if the player doesn’t exist (fallback for safety).
+function getRankForId(id){
+  const p = findPlayer(id);
+  return p ? p.rank : 1;
+}
+
+// Computes a “metric” that represents team strength.
+// The formula depends on the chosen method.
+function computeMetric(method,idA,idB){
+  const rA = getRankForId(idA);
+  const rB = getRankForId(idB);
+
+  // Multiply ranks
+  if (method === 'product') return { metric: rA * rB, rA, rB };
+
+  // Geometric mean of ranks
+  if (method === 'geometric') return { metric: Math.sqrt(rA * rB), rA, rB };
+
+  // Simple sum of ranks
+  return { metric: rA + rB, rA, rB };
+}
+
+
+// ==============================================
+// COMPUTE SCORE PREVIEW (before assigning points)
+// ==============================================
+
+function computePreview(){
+
+  // Get chosen method (product, geometric, or sum)
+  const method = document.getElementById('method').value;
+
+  // Base points (minimum 1 to avoid division errors)
+  const base = Math.max(1, Number(document.getElementById('base').value) || 100);
+
+  // Get player IDs from all 4 team dropdowns
+  const t1a = document.getElementById('t1p1').value;
+  const t1b = document.getElementById('t1p2').value;
+  const t2a = document.getElementById('t2p1').value;
+  const t2b = document.getElementById('t2p2').value;
+
+  // Check for duplicate player selection
+  const sel = [t1a,t1b,t2a,t2b];
+  if (new Set(sel).size < sel.length)
+    return { error: 'Hai selezionato lo stesso giocatore più volte; scegli giocatori diversi.' };
+
+  // Compute metrics (team strength) for both teams
+  const m1 = computeMetric(method, t1a, t1b);
+  const m2 = computeMetric(method, t2a, t2b);
+
+  // Validate computed metrics
+  if (!m1.metric || !m2.metric)
+    return { error: 'Metriche invalide.' };
+
+  // Calculate the winning points for each team:
+  // The stronger team (smaller metric) gains fewer points,
+  // the weaker team gains more.
+  const win1 = Math.round((m1.metric / m2.metric) * base);
+  const win2 = Math.round((m2.metric / m1.metric) * base);
+
+  // Return all relevant data in one object
+  return { ok:true, m1, m2, win1, win2, base };
+}
+
+
+
+// ==============================================
+// HISTORY SNAPSHOT / UNDO SUPPORT
+// ==============================================
+
+// Saves a snapshot of the current points for all players.
+// This allows undoing the most recent assignment later.
+function snapshot(){
+  historyStack.push(players.map(p => ({ id: p.id, points: p.points })));
+
+  // Limit history stack to last 200 operations to avoid memory bloat.
+  if (historyStack.length > 200) historyStack.shift();
+
+  saveState(); // persist snapshot to storage
+}
+
+
+
+// ==============================================
+// ALERT AND CONFIRMATION MODALS
+// ==============================================
+
+// Displays a custom “OK-only” modal message instead of browser alert()
+function showAppAlert(text, callback) {
+  const modal = document.createElement('div');
+  modal.className = 'modal-backdrop';
+  modal.innerHTML = `
+    <div class="modal">
+      <h3>${text}</h3>
+      <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end;">
+        <button id="okBtn" class="btn btn-primary">OK</button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+
+  // When OK is clicked: close modal and run optional callback
+  modal.querySelector('#okBtn').onclick = () => {
+    modal.remove();
+    if (callback) callback();
+  };
+}
+
+
+// Similar to showAppAlert, but with Yes/No buttons.
+// Executes onConfirm() if user says “Yes”,
+// or onCancel() if user says “No”.
+function showAppConfirm(text, onConfirm, onCancel) {
+  const modal = document.createElement('div');
+  modal.className = 'modal-backdrop';
+  modal.innerHTML = `
+    <div class="modal">
+      <h3>${text}</h3>
+      <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end;">
+        <button id="yesBtn" class="btn btn-primary">Sì</button>
+        <button id="noBtn" class="btn btn-secondary">No</button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+
+  modal.querySelector('#yesBtn').onclick = () => { modal.remove(); onConfirm(); };
+  modal.querySelector('#noBtn').onclick = () => { modal.remove(); if (onCancel) onCancel(); };
+}
+
+
+
+// ==============================================
+// UNDO FUNCTION
+// ==============================================
+
+// Restores the last saved points from historyStack
+function undo(){
+  if (!historyStack.length){
+    alert('Nessuna assegnazione da annullare.');
+    return;
+  }
+
+  // Retrieve and remove last snapshot
+  const last = historyStack.pop();
+
+  // Restore points for each player
+  last.forEach(s => {
+    const p = findPlayer(s.id);
+    if (p) p.points = s.points;
+  });
+
+  computeRanks();
+  refreshTable();
+  saveState();
+
+  // Show small message confirming undo
+  showMsg('Ultima assegnazione annullata.', 1600);
+}
+
+
+
+// ==============================================
+// WINNER SELECTION MODAL
+// ==============================================
+
+// Opens the “Select Winner” modal, with two team names as choices.
+// Calls cbChoice(1) if team 1 wins, cbChoice(2) if team 2 wins,
+// or cbChoice(null) if canceled.
+function openWinnerModal(text1, text2, cbChoice){
+  const modal = document.getElementById('modalBackdrop');
+
+  // Insert the team names into the modal buttons
+  document.getElementById('modalChoice1').textContent = text1;
+  document.getElementById('modalChoice2').textContent = text2;
+
+  // Show the modal
+  modal.style.display = 'flex';
+
+  // Define cleanup to remove event listeners and hide modal
+  function cleanup(){
+    modal.style.display = 'none';
+    document.getElementById('modalChoice1').onclick = null;
+    document.getElementById('modalChoice2').onclick = null;
+    document.getElementById('modalCancel').onclick = null;
+  }
+
+  // When a team is chosen or cancelled
+  document.getElementById('modalChoice1').onclick = () => { cleanup(); cbChoice(1); };
+  document.getElementById('modalChoice2').onclick = () => { cleanup(); cbChoice(2); };
+  document.getElementById('modalCancel').onclick = () => { cleanup(); cbChoice(null); };
+}
+
+
+
+// ==============================================
+// UI EVENT HANDLERS
+// ==============================================
+
+// --- Calculate Points Button ---
+document.getElementById('calcBtn').addEventListener('click', ()=>{
+  const out = document.getElementById('output');
+  out.style.display = 'none'; // hide previous output
+  const res = computePreview();
+
+  // Handle errors from invalid selections
+  if (res && res.error){ alert(res.error); return; }
+
+  // Get player objects
+  const p1 = findPlayer(document.getElementById('t1p1').value);
+  const p2 = findPlayer(document.getElementById('t1p2').value);
+  const q1 = findPlayer(document.getElementById('t2p1').value);
+  const q2 = findPlayer(document.getElementById('t2p2').value);
+
+  // Display calculated points for each possible winning team
+  out.textContent = 
+    `Se vince "${p1.name}" & "${p2.name}" → ciascuno ottiene: ${res.win1} punti\n` +
+    `Se vince "${q1.name}" & "${q2.name}" → ciascuno ottiene: ${res.win2} punti`;
+  out.style.display = 'block';
+});
+
+
+// --- Assign Points Button ---
+document.getElementById('assignBtn').addEventListener('click', ()=>{
+  const res = computePreview();
+  if (res && res.error){ alert(res.error); return; }
+
+  const p1 = findPlayer(document.getElementById('t1p1').value);
+  const p2 = findPlayer(document.getElementById('t1p2').value);
+  const q1 = findPlayer(document.getElementById('t2p1').value);
+  const q2 = findPlayer(document.getElementById('t2p2').value);
+
+  // Open modal where the user chooses which team won
+  openWinnerModal(
+    `Squadra 1: ${p1.name} & ${p2.name}`,
+    `Squadra 2: ${q1.name} & ${q2.name}`,
+    (choice)=>{
+
+      // If canceled
+      if (!choice){ showMsg('Assegnazione annullata.',1200); return; }
+
+      snapshot(); // Save current state for undo
+
+      // Add points to the chosen team
+      if (choice === 1){
+        findPlayer(p1.id).points += res.win1;
+        findPlayer(p2.id).points += res.win1;
+        showMsg(`Assegnati ${res.win1} punti a ciascun membro della Squadra 1`,5000);
+      } else {
+        findPlayer(q1.id).points += res.win2;
+        findPlayer(q2.id).points += res.win2;
+        showMsg(`Assegnati ${res.win2} punti a ciascun membro della Squadra 2`,5000);
+      }
+
+      computeRanks();
+      refreshTable();
+      saveState();
+
+      // Hide preview box
+      document.getElementById('output').style.display = 'none';
+
+      // Automatically switch to “Classifica” tab
+      document.getElementById('tabCalcBtn').classList.remove('active');
+      document.getElementById('tabTableBtn').classList.add('active');
+      document.getElementById('tabCalc').style.display = 'none';
+      document.getElementById('tabTable').style.display = '';
+      refreshTable();
+
+      // Highlight players who gained points
+      const gainedPlayers = choice === 1 ? [p1.id, p2.id] : [q1.id, q2.id];
+      const gainedPoints = choice === 1 ? res.win1 : res.win2;
+      gainedPlayers.forEach(id => {
+        const tr = [...document.querySelectorAll('#playersTable tbody tr')]
+          .find(r => r.querySelector('input').value === findPlayer(id).name);
+        if (tr) {
+          const td = tr.children[2];
+          td.style.backgroundColor = '#bbf7d0'; // light green background
+          td.insertAdjacentHTML('beforeend', `<span style="color:green;margin-left:4px;">+${gainedPoints}</span>`);
+        }
+      });
+
+      // Remove highlights automatically after 20 seconds
+      setTimeout(() => {
+        document.querySelectorAll('#playersTable td').forEach(td => td.style.backgroundColor = '');
+        document.querySelectorAll('#playersTable td span').forEach(span => span.remove());
+      }, 20000);
+  });
+});
+
+
+// --- Undo Button ---
+document.getElementById('undoBtn').addEventListener('click', ()=>undo());
+
+
+// ==============================================
+// TAB SWITCHING LOGIC
+// ==============================================
+
+// Each tab button hides the other sections and marks itself active
+document.getElementById('tabCalcBtn').addEventListener('click', ()=>{
+  document.getElementById('tabCalc').style.display = '';
+  document.getElementById('tabTable').style.display = 'none';
+  document.getElementById('tabImpost').style.display = 'none';
+  document.getElementById('tabCalcBtn').classList.add('active');
+  document.getElementById('tabTableBtn').classList.remove('active');
+  document.getElementById('tabImpostBtn').classList.remove('active');
+});
+
+document.getElementById('tabTableBtn').addEventListener('click', ()=>{
+  document.getElementById('tabCalc').style.display = 'none';
+  document.getElementById('tabTable').style.display = '';
+  document.getElementById('tabImpost').style.display = 'none';
+  document.getElementById('tabCalcBtn').classList.remove('active');
+  document.getElementById('tabTableBtn').classList.add('active');
+  document.getElementById('tabImpostBtn').classList.remove('active');
+  refreshTable();
+});
+
+document.getElementById('tabImpostBtn').addEventListener('click', ()=>{
+  document.getElementById('tabCalc').style.display = 'none';
+  document.getElementById('tabTable').style.display = 'none';
+  document.getElementById('tabImpost').style.display = '';
+  document.getElementById('tabCalcBtn').classList.remove('active');
+  document.getElementById('tabTableBtn').classList.remove('active');
+  document.getElementById('tabImpostBtn').classList.add('active');
+});
+
+// Save settings automatically when user changes them
+document.getElementById('method').addEventListener('change', saveState);
+document.getElementById('base').addEventListener('change', saveState);
+
+// ==============================================
+// ADD & REMOVE PLAYER MANAGEMENT
+// ==============================================
+
+// Add player button: creates a new player with next ID
+document.getElementById('addPlayerBtn').onclick = ()=>{
+  const newId = players.length ? Math.max(...players.map(p=>p.id)) + 1 : 1;
+  players.push({ id:newId, name:`Giocatore ${newId}`, points:0 });
+  saveState();
+  refreshTable();
+};
+
+
+// ==============================================
+// --- REMOVE PLAYER MODAL LOGIC ---
+// ==============================================
+
+// References to the “remove player” modal and its controls.
+const removeModal = document.getElementById('removePlayerModal');  // The modal backdrop container
+const removeSelect = document.getElementById('removeSelect');      // <select> where player names appear
+const confirmRemoveBtn = document.getElementById('confirmRemoveBtn'); // “Remove” button
+const cancelRemoveBtn = document.getElementById('cancelRemoveBtn');   // “Cancel” button
+
+
+// When the “Remove Player” button (🗑️) in the table is clicked...
+document.getElementById('removePlayerBtn').addEventListener('click', () => {
+
+  // If there are no players, immediately show a standard alert and stop.
+  if (!players.length) {
+    alert('Nessun giocatore disponibile.');  // “No players available.”
+    return;
+  }
+
+  // --------------------------------------------
+  // Populate the dropdown with the list of players
+  // --------------------------------------------
+  removeSelect.innerHTML = '';  // Clear any existing options first.
+
+  players.forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p.id;       // Internal player identifier
+    opt.textContent = p.name; // What the user sees in the dropdown
+    removeSelect.appendChild(opt);
+  });
+
+  // --------------------------------------------
+  // Display the modal on screen (centered)
+  // --------------------------------------------
+  removeModal.style.display = 'flex';
+});
+
+
+// ==============================================
+// CANCEL BUTTON HANDLER
+// ==============================================
+
+// When the user clicks “Annulla” (Cancel) inside the modal,
+// simply hide the modal again without changing anything.
+cancelRemoveBtn.addEventListener('click', () => {
+  removeModal.style.display = 'none';
+});
+
+
+// ==============================================
+// CONFIRM DELETION BUTTON HANDLER
+// ==============================================
+
+confirmRemoveBtn.addEventListener('click', () => {
+
+  // Get the selected player ID from the dropdown and find the player object.
+  const id = Number(removeSelect.value);
+  const player = players.find(p => p.id === id);
+  if (!player) return; // Safety check
+
+  // Show a confirmation modal before actually removing the player.
+  // This uses our custom `showAppConfirm()` function.
+  showAppConfirm(`Confermi di voler rimuovere "${player.name}"?`, () => {
+
+    // If user confirms:
+    // 1. Remove player from the array
+    players = players.filter(p => p.id !== id);
+
+    // 2. Save the new player list to localStorage
+    saveState();
+
+    // 3. Rebuild the leaderboard table
+    refreshTable();
+
+    // 4. Hide the remove-player modal
+    removeModal.style.display = 'none';
+
+    // 5. Show confirmation message
+    showAppAlert(`"${player.name}" è stato rimosso.`);
+  });
+});
+
+
+
+// ==============================================
+// ZERO POINTS RESET
+// ==============================================
+
+// This resets every player's score to zero but keeps their names.
+document.getElementById('zeroPointsBtn').addEventListener('click', () => {
+
+  // Ask for user confirmation with custom Yes/No modal.
+  showAppConfirm('Impostare tutti i punteggi a 0 (nomi invariati)?', () => {
+
+    // If confirmed: set each player's points back to 0.
+    players.forEach(p => p.points = 0);
+
+    // Recalculate ranks (they’ll all tie for rank 1)
+    computeRanks();
+
+    // Save and refresh interface
+    saveState();
+    refreshTable();
+
+    // Show “all points reset” notification
+    showAppAlert('Tutti i punteggi sono stati azzerati.');
+  });
+});
+
+
+
+// ==============================================
+// HELPER FUNCTIONS
+// ==============================================
+
+// showMsg(): displays a small temporary message in the footer area.
+//  - text: message to show
+//  - ms: how long (in milliseconds) before the message disappears
+function showMsg(text, ms = 1800) {
+  const el = document.getElementById('msg');
+  if (!el) return;
+  el.textContent = text;
+  // After ms milliseconds, clear the message (if it hasn’t changed)
+  setTimeout(() => {
+    if (el.textContent === text) el.textContent = '';
+  }, ms);
+}
+
+
+// snapshot(): saves a snapshot of all player points for undo functionality.
+// Keeps at most 200 history records to prevent memory issues.
+function snapshot() {
+  historyStack.push(players.map(p => ({ id: p.id, points: p.points })));
+  if (historyStack.length > 200) historyStack.shift();
+  saveState(); // persist snapshot
+}
+
+
+
+
+
+// ==============================================
+// INITIALIZATION (runs when the app loads)
+// ==============================================
+
+// Load previous data from localStorage (if exists) or initialize defaults.
+loadState();
+
+// Render the initial leaderboard table and populate dropdowns.
+refreshTable();
+
+
+
+// ==============================================
+// END OF SCRIPT
+// ==============================================
+</script>
+
+</body>
+</html>
