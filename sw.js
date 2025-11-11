@@ -1,5 +1,5 @@
 // Update the cache name to a new version
-const CACHE_NAME = 'cc_state_v3';
+const CACHE_NAME = 'cc_state_v4';
 const FILES_TO_CACHE = [
   './',
   './index.html',
