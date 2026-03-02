@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Samsung S22 Preview</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      background: #1a1a2e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+    }
+    h1 { color: #aaa; font-size: 13px; margin-bottom: 20px; letter-spacing: 2px; text-transform: uppercase; }
+    .phone {
+      position: relative;
+      width: 400px;
+      height: 820px;
+      background: #111;
+      border-radius: 50px;
+      box-shadow: 0 0 0 2px #333, 0 0 0 5px #1a1a1a, 0 30px 80px rgba(0,0,0,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .phone::before {
+      content: '';
+      position: absolute;
+      right: -4px; top: 140px;
+      width: 4px; height: 70px;
+      background: #333;
+      border-radius: 0 3px 3px 0;
+      box-shadow: 0 90px 0 #333;
+    }
+    .phone::after {
+      content: '';
+      position: absolute;
+      left: -4px; top: 180px;
+      width: 4px; height: 45px;
+      background: #333;
+      border-radius: 3px 0 0 3px;
+      box-shadow: 0 60px 0 #333, 0 115px 0 #333;
+    }
+    .screen-wrap {
+      width: 360px; height: 760px;
+      background: #000;
+      border-radius: 38px;
+      overflow: hidden;
+      position: relative;
+    }
+    .notch {
+      position: absolute;
+      top: 12px; left: 50%;
+      transform: translateX(-50%);
+      width: 12px; height: 12px;
+      background: #222;
+      border-radius: 50%;
+      z-index: 10;
+    }
+    iframe { width: 100%; height: 100%; border: none; border-radius: 38px; }
+    .label { color: #555; font-size: 11px; margin-top: 16px; letter-spacing: 1px; }
+  </style>
+</head>
+<body>
+  <h1>📱 Samsung S22 Preview</h1>
+  <div class="phone">
+    <div class="screen-wrap">
+      <div class="notch"></div>
+      <iframe src="index.html" title="App Preview"></iframe>
+    </div>
+  </div>
+  <p class="label">360 × 780 · Save index.html to auto-refresh</p>
+</body>
+</html>
