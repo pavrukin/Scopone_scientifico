@@ -72,9 +72,16 @@
   <div class="phone">
     <div class="screen-wrap">
       <div class="notch"></div>
-      <iframe src="./index.html"" title="App Preview" id="preview"></iframe>
+      <iframe src="./index.html" title="App Preview" id="preview"></iframe>
     </div>
   </div>
   <p class="label">360 × 780 · Save index.html to auto-refresh</p>
+  <script>
+    const iframe = document.getElementById('preview');
+    iframe.src = './index.html?t=' + new Date().getTime();
+    new EventSource('http://localhost:5500/esbuild').addEventListener('change', () => {
+    iframe.src = './index.html?t=' + new Date().getTime();
+      });
+  </script>
 </body>
 </html>
