@@ -5,6 +5,7 @@
   <title>Samsung S22 Preview</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    
     body {
       min-height: 100vh;
       background: #1a1a2e;
@@ -25,7 +26,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transform: scale(0.8);        /* 👈 add this */
+      transform: scale(0.75);        /* 👈 add this */
       transform-origin: top center; /* 👈 and this */
     }
     .phone::before {
@@ -71,7 +72,7 @@
   <div class="phone">
     <div class="screen-wrap">
       <div class="notch"></div>
-      <iframe src="index.html" title="App Preview"></iframe>
+      <iframe src="./index.html"" title="App Preview" id="preview"></iframe>
     </div>
   </div>
   <p class="label">360 × 780 · Save index.html to auto-refresh</p>
